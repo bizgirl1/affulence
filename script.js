@@ -17,19 +17,33 @@ window.fbAsyncInit = function() {
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-function getGroupOwner() {
-    const groupId = document.getElementById('groupId').value;
+const groups = [
+    { name: "Lash Community", id: "eyelashextensionartistsgroup" },
+    { name: "Lash Kingdom", id: "964120714076350" },
+    { name: "Lash Nerd Community", id: "untamedlashcommunity" },
+    { name: "Lash Tribe", id: "lashtribe" }
+];
 
+document.addEventListener("DOMContentLoaded", () => {
+    const groupList = document.getElementById('groupList');
+    groups.forEach(group => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${group.name}</strong> <button onclick="getGroupOwner('${group.id}')">Find Owner</button>`;
+        groupList.appendChild(li);
+    });
+});
+
+function getGroupOwner(groupId) {
     FB.login(response => {
         if (response.authResponse) {
             FB.api(
                 `/${groupId}`,
                 'GET',
-                { access_token: response.authResponse.accessToken },
+                { access_token: response.authResponse.accessToken, fields: 'owner' },
                 function(response) {
                     if (response && !response.error) {
                         document.getElementById('result').innerHTML = 
-                            `Group Name: ${response.name}<br>Owner: ${response.owner}`;
+                            `Group ID: ${groupId}<br>Owner: ${response.owner ? response.owner.name : 'Not available'}`;
                     } else {
                         document.getElementById('result').innerHTML = 'Error retrieving group information';
                     }
