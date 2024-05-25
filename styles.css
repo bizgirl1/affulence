@@ -1,91 +1,42 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
     margin: 0;
-    padding: 20px;
 }
 
 .container {
-    max-width: 800px;
-    margin: auto;
-    background: #fff;
+    text-align: center;
+    background: white;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h1, h2 {
-    text-align: center;
-    color: #333;
-}
-
-.outreach-section, .chatbot-section {
-    margin-bottom: 40px;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin-top: 10px;
-}
-
-input, textarea {
+input[type="text"] {
+    width: 80%;
     padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 16px;
 }
 
 button {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #007BFF;
-    color: #fff;
+    padding: 10px 20px;
     border: none;
+    background-color: #4267B2;
+    color: white;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 16px;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #365899;
 }
 
-#chat-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#chatbox {
-    width: 100%;
-    height: 300px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    overflow-y: scroll;
-    padding: 10px;
-    background-color: #f9f9f9;
-    margin-bottom: 10px;
-}
-
-#chatbox p {
-    margin: 5px 0;
-}
-
-#user-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
-}
-
-#outreach-response {
+#result {
     margin-top: 20px;
-    font-size: 16px;
-    color: green;
 }
