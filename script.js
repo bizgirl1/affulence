@@ -1,55 +1,42 @@
-document.getElementById('outreach-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const leadEmail = document.getElementById('lead-email').value;
-    const personalMessage = document.getElementById('personal-message').value;
-
-    // Simulate sending email
-    sendEmail(leadEmail, personalMessage)
-        .then(response => {
-            document.getElementById('outreach-response').innerText = response;
-        })
-        .catch(error => {
-            document.getElementById('outreach-response').innerText = error;
-        });
-});
-
-function sendEmail(email, message) {
-    // Replace with actual email sending logic (API call)
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(`Email sent to ${email} with message: "${message}"`);
-        }, 1000);
+window.fbAsyncInit = function() {
+    FB.init({
+        appId      : 'YOUR_APP_ID',
+        cookie     : true,
+        xfbml      : true,
+        version    : 'v16.0'
     });
-}
 
-function sendMessage() {
-    const userInput = document.getElementById('user-input').value;
-    if (userInput.trim() === "") return;
+    FB.AppEvents.logPageView();
+};
 
-    addChatMessage("You", userInput);
+(function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
 
-    // Simulate chatbot response
-    getChatbotResponse(userInput)
-        .then(response => {
-            addChatMessage("Chatbot", response);
-        });
+function getGroupOwner() {
+    const groupId = document.getElementById('groupId').value;
 
-    document.getElementById('user-input').value = "";
-}
-
-function addChatMessage(sender, message) {
-    const chatbox = document.getElementById('chatbox');
-    const messageElement = document.createElement('p');
-    messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
-    chatbox.appendChild(messageElement);
-    chatbox.scrollTop = chatbox.scrollHeight;
-}
-
-function getChatbotResponse(message) {
-    // Replace with actual chatbot response logic (API call)
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(`This is a simulated response to: "${message}"`);
-        }, 1000);
-    });
+    FB.login(response => {
+        if (response.authResponse) {
+            FB.api(
+                `/${groupId}`,
+                'GET',
+                { access_token: response.authResponse.accessToken },
+                function(response) {
+                    if (response && !response.error) {
+                        document.getElementById('result').innerHTML = 
+                            `Group Name: ${response.name}<br>Owner: ${response.owner}`;
+                    } else {
+                        document.getElementById('result').innerHTML = 'Error retrieving group information';
+                    }
+                }
+            );
+        } else {
+            document.getElementById('result').innerHTML = 'User cancelled login or did not fully authorize.';
+        }
+    }, {scope: 'groups_access_member_info'});
 }
