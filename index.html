@@ -3,39 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ConversationalProspect</title>
+    <title>Facebook Group Owner Locator</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>ConversationalProspect</h1>
-
-        <!-- Outreach Section -->
-        <div class="outreach-section">
-            <h2>Send Personalized Outreach</h2>
-            <form id="outreach-form">
-                <label for="lead-email">Lead's Email:</label>
-                <input type="email" id="lead-email" required>
-
-                <label for="personal-message">Personal Message:</label>
-                <textarea id="personal-message" rows="4" required></textarea>
-
-                <button type="submit">Send Email</button>
-            </form>
-            <div id="outreach-response"></div>
-        </div>
-
-        <!-- Chatbot Section -->
-        <div class="chatbot-section">
-            <h2>Chatbot Interaction</h2>
-            <div id="chat-container">
-                <div id="chatbox"></div>
-                <input type="text" id="user-input" placeholder="Type your message here...">
-                <button onclick="sendMessage()">Send</button>
-            </div>
-        </div>
+        <h1>Facebook Group Owner Locator</h1>
+        <input type="text" id="groupId" placeholder="Enter Facebook Group ID">
+        <button onclick="getGroupOwner()">Find Owner</button>
+        <div id="result"></div>
     </div>
 
+    <script src="https://connect.facebook.net/en_US/sdk.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
