@@ -30,7 +30,7 @@ label {
     margin: 10px 0 5px;
 }
 
-select, button {
+select, input, button {
     padding: 10px;
     margin-bottom: 20px;
     border-radius: 5px;
