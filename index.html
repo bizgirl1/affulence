@@ -18,11 +18,10 @@
                 <option value="technology">Technology</option>
             </select>
 
-            <label for="investment">How much are you willing to invest?</label>
+            <label for="investment">Are you willing to invest?</label>
             <select id="investment">
-                <option value="low">Less than $100</option>
-                <option value="medium">$100 - $500</option>
-                <option value="high">More than $500</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
             </select>
 
             <label for="experience">Do you have any prior experience in MLM?</label>
@@ -31,6 +30,18 @@
                 <option value="some">Some Experience</option>
                 <option value="expert">Expert</option>
             </select>
+
+            <label for="ticket">Do you want to sell high-ticket or low-ticket products?</label>
+            <select id="ticket">
+                <option value="high">High-ticket products (high commission but take more time to sell)</option>
+                <option value="low">Low-ticket products (lower commission but it takes less time to sell)</option>
+            </select>
+
+            <label for="first-name">First Name</label>
+            <input type="text" id="first-name" required>
+
+            <label for="phone-number">Phone Number</label>
+            <input type="tel" id="phone-number" required>
 
             <button type="submit">Find My MLM</button>
         </form>
