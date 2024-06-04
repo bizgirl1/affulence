@@ -6,14 +6,6 @@
     <title>CRM for Melaleuca Sales Associates</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <div id="crm">
-        <h1>Data Export to CSV</h1>
-        <button id="export-btn">Export to CSV</button>
-    </div>
-
-    <script src="script.js"></script>
-</body>
     <div id="crm">
         <h1>Melaleuca CRM</h1>
 
@@ -207,6 +199,44 @@
                 Total Recruitment Earnings: $<span id="total-recruitment-value">0.00</span>
             </div>
         </section>
+
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Export to CSV</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="crm">
+        <h1>Data Export to CSV</h1>
+        <div class="input-fields">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone">
+        </div>
+        <button id="add-entry">Add Entry</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+        <button id="export-btn">Export to CSV</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
 
     </div>
     <script src="script.js"></script>
