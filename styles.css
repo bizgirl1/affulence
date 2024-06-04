@@ -1,65 +1,108 @@
-/* styles.css */
+/* General styles */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #f0f4f5;
+    color: #333;
     margin: 0;
     padding: 0;
 }
 
-.container {
-    width: 80%;
-    max-width: 600px;
-    margin: 50px auto;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+h1, h2, h3 {
+    text-align: center;
+    color: #00796b;
 }
 
-h1, h2 {
-    text-align: center;
-    color: #333;
+#crm {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 form {
     display: flex;
     flex-direction: column;
+    margin-bottom: 20px;
 }
 
 label {
-    margin: 10px 0 5px;
+    margin: 5px 0;
+    color: #00796b;
 }
 
-select, input, button {
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
+input, select, button {
+    padding: 8px;
+    margin-bottom: 10px;
     border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
 }
 
 button {
-    background-color: #007BFF;
-    color: white;
-    cursor: pointer;
+    background-color: #00796b;
+    color: #fff;
     border: none;
+    cursor: pointer;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #004d40;
 }
 
-#results {
-    display: none;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
 }
 
-#results ul {
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #00796b;
+    color: #fff;
+}
+
+ul {
     list-style-type: none;
     padding: 0;
 }
 
-#results li {
-    background: #e2e2e2;
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 5px;
+ul li {
+    padding: 8px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+    border-radius: 4px;
+}
+
+#total-sales, #recruitment-total {
+    font-weight: bold;
+    color: #00796b;
+    text-align: right;
+    margin-top: 10px;
+}
+
+#google-form iframe {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+/* Specific section styles */
+#outreach-messages, #appointments, #sales, #recruitment, #google-form {
+    margin-bottom: 30px;
+}
+
+#outreach-messages h3, #recruitment h2 {
+    margin-bottom: 10px;
+}
+
+#appointments h2, #sales h2, #recruitment h2 {
+    margin-top: 0;
 }
