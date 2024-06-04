@@ -166,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addLead = addLead;
     window.addRecruit = addRecruit;
 
-  document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('export-btn').addEventListener('click', () => {
         // Example data
         const data = [
