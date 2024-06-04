@@ -166,20 +166,40 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addLead = addLead;
     window.addRecruit = addRecruit;
 
+  document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('export-btn').addEventListener('click', () => {
-    const data = [
-        ['Name', 'Email', 'Phone'],
-        ['John Doe', 'john@example.com', '123-456-7890'],
-        ['Jane Smith', 'jane@example.com', '987-654-3210'],
-        ['Alice Johnson', 'alice@example.com', '555-123-4567']
-    ];
+        // Example data
+        const data = [
+            ['Name', 'Email', 'Phone'],
+            ['John Doe', 'john@example.com', '123-456-7890'],
+            ['Jane Smith', 'jane@example.com', '987-654-3210'],
+            ['Alice Johnson', 'alice@example.com', '555-123-4567']
+        ];
 
-    const csvContent = "data:text/csv;charset=utf-8," + data.map(row => row.join(',')).join('\n');
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "data.csv");
-    document.body.appendChild(link);
-    link.click();
+        // Convert data to CSV format
+        const csvContent = convertToCSV(data);
+
+        // Create a blob with CSV content
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+
+        // Create a temporary link element to trigger the download
+        const link = document.createElement("a");
+        link.setAttribute("href", URL.createObjectURL(blob));
+        link.setAttribute("download", "data.csv");
+
+        // Trigger the download
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+
+    // Function to convert data array to CSV format
+    function convertToCSV(data) {
+        const csvRows = [];
+        for (const row of data) {
+            const csvRow = row.map(value => `"${value}"`).join(",");
+            csvRows.push(csvRow);
+        }
+        return csvRows.join("\n");
+    }
 });
-
