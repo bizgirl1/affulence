@@ -1,168 +1,173 @@
-document.addEventListener("DOMContentLoaded", () => {
-    function addLead(network) {
-        const name = document.getElementById(`${network}-name`).value;
-        const email = document.getElementById(`${network}-email`).value;
-        const phone = document.getElementById(`${network}-phone`).value;
-        const niche = document.getElementById(`${network}-niche`).value;
-        const appointmentSet = document.getElementById(`${network}-appointment-set`).value;
+// Initialize arrays to hold the data
+let outsideLeads = [];
+let insideLeads = [];
+let appointments = [];
+let sales = [];
+let recruits = [];
 
-        if (!name || !email || !phone || !niche) {
-            alert("Please fill out all fields.");
-            return;
-        }
+// Function to add a lead
+function addLead(type) {
+    const form = document.getElementById(`${type}-network-form`);
+    const name = form.querySelector('input[name="name"]').value;
+    const email = form.querySelector('input[name="email"]').value;
+    const phone = form.querySelector('input[name="phone"]').value;
+    const niche = form.querySelector('select[name="niche"]').value;
+    const appointmentSet = form.querySelector('select[name="appointment-set"]').value;
 
-        const lead = { name, email, phone, niche, appointmentSet };
+    const lead = { name, email, phone, niche, appointmentSet };
 
-        if (appointmentSet === "waiting") {
-            addToList("waiting-list", lead);
-        } else if (appointmentSet === "no") {
-            addToList("rejected-list", lead);
-        } else {
-            addAppointment(lead);
-        }
-
-        clearForm(`${network}-network-form`);
+    if (appointmentSet === 'yes') {
+        appointments.push(lead);
+        updateAppointments();
+    } else if (appointmentSet === 'waiting') {
+        addToWaitingList(lead);
+    } else if (appointmentSet === 'no') {
+        addToRejectedList(lead);
     }
 
-    function addToList(listId, lead) {
-        const listItem = document.createElement("li");
-        listItem.textContent = `${lead.name} (${lead.email}, ${lead.phone}, ${lead.niche})`;
-        document.getElementById(listId).appendChild(listItem);
+    if (type === 'outside') {
+        outsideLeads.push(lead);
+    } else {
+        insideLeads.push(lead);
     }
 
-    function addAppointment(lead) {
-        const row = document.createElement("tr");
+    form.reset();
+}
 
-        const nameCell = document.createElement("td");
-        nameCell.textContent = lead.name;
+function addToWaitingList(lead) {
+    const waitingList = document.getElementById('waiting-list');
+    const li = document.createElement('li');
+    li.textContent = `${lead.name} - ${lead.email} - ${lead.phone} - ${lead.niche}`;
+    waitingList.appendChild(li);
+}
 
-        const dateSetCell = document.createElement("td");
-        const dateSetInput = document.createElement("input");
-        dateSetInput.type = "date";
-        dateSetCell.appendChild(dateSetInput);
+function addToRejectedList(lead) {
+    const rejectedList = document.getElementById('rejected-list');
+    const li = document.createElement('li');
+    li.textContent = `${lead.name} - ${lead.email} - ${lead.phone} - ${lead.niche}`;
+    rejectedList.appendChild(li);
+}
 
-        const dateCallCell = document.createElement("td");
-        const dateCallInput = document.createElement("input");
-        dateCallInput.type = "date";
-        dateCallCell.appendChild(dateCallInput);
+// Function to update the appointments list
+function updateAppointments() {
+    const appointmentsList = document.getElementById('appointments-list');
+    appointmentsList.innerHTML = '';
+    appointments.forEach((appointment, index) => {
+        const tr = document.createElement('tr');
 
-        const attendedCell = document.createElement("td");
-        const attendedSelect = document.createElement("select");
-        const optionYes = document.createElement("option");
-        optionYes.value = "yes";
-        optionYes.textContent = "Yes";
-        const optionNo = document.createElement("option");
-        optionNo.value = "no";
-        optionNo.textContent = "No";
-        attendedSelect.appendChild(optionYes);
-        attendedSelect.appendChild(optionNo);
-        attendedCell.appendChild(attendedSelect);
+        const nameTd = document.createElement('td');
+        nameTd.textContent = appointment.name;
+        tr.appendChild(nameTd);
 
-        attendedSelect.addEventListener("change", () => {
-            if (attendedSelect.value === "yes") {
-                addSale(lead.name);
-            }
-        });
-
-        row.appendChild(nameCell);
-        row.appendChild(dateSetCell);
-        row.appendChild(dateCallCell);
-        row.appendChild(attendedCell);
-
-        document.getElementById("appointments-list").appendChild(row);
-    }
-
-    function addSale(name) {
-        const row = document.createElement("tr");
-
-        const nameCell = document.createElement("td");
-        nameCell.textContent = name;
-
-        const responseCell = document.createElement("td");
-        const responseSelect = document.createElement("select");
-        const optionAccepted = document.createElement("option");
-        optionAccepted.value = "accepted";
-        optionAccepted.textContent = "Accepted";
-        const optionRejected = document.createElement("option");
-        optionRejected.value = "rejected";
-        optionRejected.textContent = "Rejected";
-        responseSelect.appendChild(optionAccepted);
-        responseSelect.appendChild(optionRejected);
-        responseCell.appendChild(responseSelect);
-
-        const valueCell = document.createElement("td");
-        const valueInput = document.createElement("input");
-        valueInput.type = "number";
-        valueInput.step = "0.01";
-        valueInput.addEventListener("input", updateTotalSales);
-        valueCell.appendChild(valueInput);
-
-        row.appendChild(nameCell);
-        row.appendChild(responseCell);
-        row.appendChild(valueCell);
-
-        document.getElementById("sales-list").appendChild(row);
-    }
-
-    function updateTotalSales() {
-        let total = 0;
-        document.querySelectorAll("#sales-list input[type='number']").forEach(input => {
-            total += parseFloat(input.value) || 0;
-        });
-        document.getElementById("total-sales-value").textContent = total.toFixed(2);
-    }
-
-    function addRecruit() {
-        const firstName = document.getElementById("first-name").value;
-        const lastName = document.getElementById("last-name").value;
-        const phone = document.getElementById("phone").value;
-        const email = document.getElementById("email").value;
-        const dateAccepted = document.getElementById("date-accepted").value;
-        const tier = parseInt(document.getElementById("tier").value, 10);
-        const inboundOutbound = document.getElementById("inbound-outbound").value;
-        const niche = document.getElementById("recruitment-niche").value;
-        const recruits = parseInt(document.getElementById("recruits").value, 10);
-        const percentage = parseFloat(document.getElementById("percentage").value);
-        const monthlyAmount = parseFloat(document.getElementById("monthly-amount").value);
-
-        if (!firstName || !lastName || !phone || !email || !dateAccepted || isNaN(tier) || isNaN(recruits) || isNaN(percentage) || isNaN(monthlyAmount)) {
-            alert("Please fill out all fields.");
-            return;
-        }
-
-        const recruit = {
-            firstName,
-            lastName,
-            phone,
-            email,
-            dateAccepted,
-            tier,
-            inboundOutbound,
-            niche,
-            recruits,
-            percentage,
-            monthlyAmount
+        const dateAppointmentSetTd = document.createElement('td');
+        const dateAppointmentSetInput = document.createElement('input');
+        dateAppointmentSetInput.type = 'date';
+        dateAppointmentSetInput.onchange = () => {
+            appointment.dateAppointmentSet = dateAppointmentSetInput.value;
         };
+        dateAppointmentSetTd.appendChild(dateAppointmentSetInput);
+        tr.appendChild(dateAppointmentSetTd);
 
-        const listItem = document.createElement("li");
-        listItem.textContent = `${recruit.firstName} ${recruit.lastName} (${recruit.email}, ${recruit.phone}) - ${recruit.recruits} recruits @ ${recruit.percentage}% - Monthly Amount: $${recruit.monthlyAmount}`;
-        document.getElementById("recruits-list").appendChild(listItem);
+        const dateSalesCallTd = document.createElement('td');
+        const dateSalesCallInput = document.createElement('input');
+        dateSalesCallInput.type = 'date';
+        dateSalesCallInput.onchange = () => {
+            appointment.dateSalesCall = dateSalesCallInput.value;
+        };
+        dateSalesCallTd.appendChild(dateSalesCallInput);
+        tr.appendChild(dateSalesCallTd);
 
-        updateTotalRecruitment(recruit.monthlyAmount, recruit.percentage, recruit.recruits);
+        const attendedSalesCallTd = document.createElement('td');
+        const attendedSalesCallSelect = document.createElement('select');
+        attendedSalesCallSelect.innerHTML = '<option value="yes">Yes</option><option value="no">No</option>';
+        attendedSalesCallSelect.onchange = () => {
+            appointment.attendedSalesCall = attendedSalesCallSelect.value;
+            if (attendedSalesCallSelect.value === 'yes') {
+                sales.push(appointment);
+                updateSales();
+            }
+        };
+        attendedSalesCallTd.appendChild(attendedSalesCallSelect);
+        tr.appendChild(attendedSalesCallTd);
 
-        clearForm("recruitment-form");
-    }
+        appointmentsList.appendChild(tr);
+    });
+}
 
-    function updateTotalRecruitment(amount, percentage, recruits) {
-        const total = parseFloat(document.getElementById("total-recruitment-value").textContent) || 0;
-        const earnings = amount * (percentage / 100) * recruits;
-        document.getElementById("total-recruitment-value").textContent = (total + earnings).toFixed(2);
-    }
+// Function to update the sales list
+function updateSales() {
+    const salesList = document.getElementById('sales-list');
+    salesList.innerHTML = '';
+    let totalSalesValue = 0;
+    sales.forEach((sale, index) => {
+        const tr = document.createElement('tr');
 
-    function clearForm(formId) {
-        document.getElementById(formId).reset();
-    }
+        const nameTd = document.createElement('td');
+        nameTd.textContent = sale.name;
+        tr.appendChild(nameTd);
 
-    window.addLead = addLead;
-    window.addRecruit = addRecruit;
-});
+        const responseTd = document.createElement('td');
+        const responseSelect = document.createElement('select');
+        responseSelect.innerHTML = '<option value="accepted">Accepted</option><option value="rejected">Rejected</option>';
+        responseSelect.onchange = () => {
+            sale.response = responseSelect.value;
+        };
+        responseTd.appendChild(responseSelect);
+        tr.appendChild(responseTd);
+
+        const valueTd = document.createElement('td');
+        const valueInput = document.createElement('input');
+        valueInput.type = 'number';
+        valueInput.onchange = () => {
+            sale.value = parseFloat(valueInput.value);
+            calculateTotalSales();
+        };
+        valueTd.appendChild(valueInput);
+        tr.appendChild(valueTd);
+
+        salesList.appendChild(tr);
+    });
+}
+
+// Function to calculate and update total sales value
+function calculateTotalSales() {
+    let totalSalesValue = sales.reduce((total, sale) => {
+        return total + (sale.value || 0);
+    }, 0);
+    document.getElementById('total-sales-value').textContent = totalSalesValue.toFixed(2);
+}
+
+// Function to add a recruit
+function addRecruit() {
+    const form = document.getElementById('recruitment-form');
+    const firstName = form.querySelector('input[name="first-name"]').value;
+    const lastName = form.querySelector('input[name="last-name"]').value;
+    const phone = form.querySelector('input[name="phone"]').value;
+    const email = form.querySelector('input[name="email"]').value;
+    const dateAccepted = form.querySelector('input[name="date-accepted"]').value;
+    const tier = form.querySelector('input[name="tier"]').value;
+    const inboundOutbound = form.querySelector('select[name="inbound-outbound"]').value;
+    const niche = form.querySelector('select[name="niche"]').value;
+    const recruitsCount = parseInt(form.querySelector('input[name="recruits"]').value);
+    const percentage = parseFloat(form.querySelector('input[name="percentage"]').value);
+    const monthlyAmount = parseFloat(form.querySelector('input[name="monthly-amount"]').value);
+
+    const recruit = { firstName, lastName, phone, email, dateAccepted, tier, inboundOutbound, niche, recruitsCount, percentage, monthlyAmount };
+    recruits.push(recruit);
+    updateRecruits();
+    form.reset();
+}
+
+// Function to update the recruits list
+function updateRecruits() {
+    const recruitsList = document.getElementById('recruits-list');
+    recruitsList.innerHTML = '';
+    let totalRecruitmentValue = 0;
+    recruits.forEach((recruit, index) => {
+        const li = document.createElement('li');
+        li.textContent = `${recruit.firstName} ${recruit.lastName} - ${recruit.phone} - ${recruit.email} - ${recruit.niche} - ${recruit.recruitsCount} recruits - ${recruit.percentage}% - $${recruit.monthlyAmount}`;
+        recruitsList.appendChild(li);
+        totalRecruitmentValue += recruit.recruitsCount * recruit.percentage / 100 * recruit.monthlyAmount;
+    });
+    document.getElementById('total-recruitment-value').textContent = totalRecruitmentValue.toFixed(2);
+}
