@@ -133,69 +133,47 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    const data = [];
+    const waitingLeads = [["Name", "Email", "Phone"], ["John Doe", "john@example.com", "123-456-7890"]];
+    const rejectedLeads = [["Name", "Email", "Phone"], ["Jane Smith", "jane@example.com", "987-654-3210"]];
+    const acceptedLeads = [["Name", "Email", "Phone"], ["Alice Johnson", "alice@example.com", "555-123-4567"]];
+    const appointments = [["Name", "Date", "Attended"], ["John Doe", "2024-06-04", "Yes"]];
+    const sales = [["Name", "Response to Offer", "Value"], ["John Doe", "Accepted", "$100"]];
+    const recruitment = [["Name", "Email", "Phone", "Date Accepted", "Tier", "Inbound/Outbound", "Niche", "Recruits", "Percentage"]];
 
-    // Function to add a new entry
-    function addEntry() {
-        const name = document.getElementById("name").value;
-        const email = document.getElementById("email").value;
-        const phone = document.getElementById("phone").value;
-
-        if (name && email && phone) {
-            const entry = [name, email, phone];
-            data.push(entry);
-            appendTableRow(entry);
-            clearFields();
-        } else {
-            alert("Please fill in all fields.");
-        }
+    // Function to export data to CSV
+    function exportToCSV(data, filename) {
+        const csvContent = "data:text/csv;charset=utf-8," + data.map(row => row.join(',')).join('\n');
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
-    // Function to update the table with new entry
-    function appendTableRow(entry) {
-        const tableBody = document.getElementById("table-body");
-        const row = document.createElement("tr");
-        entry.forEach(value => {
-            const cell = document.createElement("td");
-            cell.textContent = value;
-            row.appendChild(cell);
-        });
-        tableBody.appendChild(row);
-    }
-
-    // Function to clear input fields
-    function clearFields() {
-        document.getElementById("name").value = "";
-        document.getElementById("email").value = "";
-        document.getElementById("phone").value = "";
-    }
-
-    // Event listener for the Add Entry button
-    document.getElementById("add-entry").addEventListener("click", addEntry);
-
-    // Event listener for the Export to CSV button
-    document.getElementById("export-btn").addEventListener("click", () => {
-        if (data.length > 0) {
-            const csvContent = convertToCSV(data);
-            const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-            const link = document.createElement("a");
-            link.setAttribute("href", URL.createObjectURL(blob));
-            link.setAttribute("download", "data.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        } else {
-            alert("No data to export.");
-        }
+    // Event listeners for export buttons
+    document.getElementById("export-waiting-leads").addEventListener("click", () => {
+        exportToCSV(waitingLeads, "waiting_leads.csv");
     });
 
-    // Function to convert data array to CSV format
-    function convertToCSV(data) {
-        const csvRows = [];
-        for (const row of data) {
-            const csvRow = row.map(value => `"${value}"`).join(",");
-            csvRows.push(csvRow);
-        }
-        return csvRows.join("\n");
-    }
+    document.getElementById("export-rejected-leads").addEventListener("click", () => {
+        exportToCSV(rejectedLeads, "rejected_leads.csv");
+    });
+
+    document.getElementById("export-accepted-leads").addEventListener("click", () => {
+        exportToCSV(acceptedLeads, "accepted_leads.csv");
+    });
+
+    document.getElementById("export-appointments").addEventListener("click", () => {
+        exportToCSV(appointments, "appointments.csv");
+    });
+
+    document.getElementById("export-sales").addEventListener("click", () => {
+        exportToCSV(sales, "sales.csv");
+    });
+
+    document.getElementById("export-recruitment").addEventListener("click", () => {
+        exportToCSV(recruitment, "recruitment.csv");
+    });
 });
